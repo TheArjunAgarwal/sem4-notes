@@ -1147,7 +1147,7 @@ We have types of valuations such that
   - *Supramodular*: $v_i (S union) + v_i (S inter T) >= v_i (S) + v_i (T)$
 ]
 
-We normally make a *normalization* assumption that is $forall i, v_i (emptyset) = 0$. A stronger assumption which is sometimes made is called *strong normalization*#footnote[Non-standard term! Borrowed from Prof. Palavi Jain or Prof. Sushmita Gupta during COMSOC-2025 at IIT Jodhpur.]  where $v_i (Z) = 1$.
+We normally make a *normalization* assumption that is $forall i, v_i (emptyset) = 0$. A stronger assumption which is sometimes made is called *strong normalization*#footnote[Non-standard term! Borrowed from Prof. Palavi Jain and Prof. Sushmita Gupta during COMSOC-2025 at IIT Jodhpur.]  where $v_i (Z) = 1$.
 
 Another standardized assumption is *monotonicity* that is $forall S subset.eq T, v_i (S) <= v_i (T)$.
 
@@ -1526,7 +1526,7 @@ While NSWO is guaranteed to exist, it is NP hard to find and even hard to approx
 Mechanism design is used to design tournaments, voting schemes and schemes to divide stuff.
 
 = Auction Theory
-== Single Item Auction
+== Single Item, Sealed Bid Auctions
 #definition(title: "Single Item Auction")[
   One seller wants to sell a single item, $n$ interested buyers (agents). Each agent has a value $v_i$ for the item.
 
@@ -1535,7 +1535,6 @@ Mechanism design is used to design tournaments, voting schemes and schemes to di
   *To decide:* Who gets the item? At what price?
 ]
 We normally make the assumption that the agents are unaware of each other's valuations.
-== Sealed Bid Auctions
 #definition(title: "Single Item, Sealed Bid")[
   (1) Each bidder $i$ privately communicates a bid $b_i$ to the auctioneer.
   
@@ -1565,19 +1564,26 @@ We can implement $(3)$ as:
 #definition(title: "Awesome Auctions")[
  We want an auction to have the following properties
 - *Dominant Strategy Incentive Compatible (DSIC)*: Truthful bidding must be a dominant stratergy.
-- *Strong Performance Guarantee*: Maximize $sum x_i v_i$ or social surplus where $x_i$ is $1$ if $i$ wins and $0$ if $i$ loses, subject to the obvious feasibility constraint that $sum_(i=1)^n x_i <= 1$ as we have only one item.
-- *Polyline Computability*
+- *Strong Performance Guarante (SPG) *: Maximize $sum x_i v_i$ or social surplus where $x_i$ is $1$ if $i$ wins and $0$ if $i$ loses, subject to the obvious feasibility constraint that $sum_(i=1)^n x_i = 1$ as we have only one item.
+- *Polytime Computability*
 ]
 An awesome auction is clearly desirable as truthful bidding is a dominant strategy, the auction guarantees that the item will go to the agents who value it the most and the auction can be decided before the heat-death of the universe.
 #claim[
   Second Price Auction is awesome.
 ]
+We have seen the DSIC condition hold true as above. Secondly, if agent $i$ is the winner then $v_i = b_i >= b_j = v_j forall j in [n]$; satisfying SPG. Finally, we compute the pricing and allocation in polytime.
+
 == Sponsored Search Auction
 Perhaps the most profitable auction of all time. In 2014, it made around 98% of google's revenue#footnote[You know, back when it was search engine and advertisement company and not an AI obsessed mega corporation burning money left and right].
 
 Similarly, not having a good sponsored search auction was one of the reasons behind the downfall of Yahoo.
 #definition(title:"Sponsored Search Auction")[
-Given $k$ add slots and and agents $j in [n]$ with per click value of $v_j$ of the agents. Assuming the click through rate of these slots is $alpha_i, i in k$. Thus, if agent $i$ gets slot $j$ then the value obtained is $alpha_j v_i_j$.
+Given:
+- $k$ ad slots
+- agents $j in [n]$ with per click value of $v_j$ of the agents
+- Assuming the click through rate of these slots is $alpha_i, i in [k]$. 
+
+Thus, if agent $i$ gets slot $j$ then the value obtained is $alpha_j v_i_j$.
 
 An auction to allot thee $k$ slots to $n$ agent is called an sponsored search auction.
 ]
@@ -1597,7 +1603,7 @@ An auction to allot thee $k$ slots to $n$ agent is called an sponsored search au
 The proof is an follows from Rearrangement inequality.
 ]
 
-The step 2 is easy and is done by something called 'Myerson's Lemma' which will be the focus of a lot of what is to come.
+The step 2 is easy and is done by something called 'Myerson's Lemma' which will be the focus of the next section.
 
 For step 3, well, that is left to the reader.
 
@@ -1651,20 +1657,28 @@ Adding them will give us the inequality.
 ]
 ]
 == Myerson's Lemma
-Let's define everything formally
-#definition(title: "Auction")[
-  $n$ agents, one seller. Private valuations $v_i, i in [n]$. $X$ is the set of feasible allocations of the items.
+Let's formally define some things we have been talking about.
+#definition(title:"Single Parameter")[
+  Given:
+  - $n$ agents, each associated with a single parameter $v_i$ reprasenting their valuation
+  -  a feasible set $X$ where each element is a n-vector $(x_1, x_2, dots , x_n)$, where $x_i$ denotes the “amount of stuff” given to agent $i$.
 
-  Allocation and payment rules are:
-  + Collect bids $b_i, i in [n]$ as input
-  + Allocation rule $x(B) in X$ that is $x : RR^n -> X $
-  + Payment rule $p(B) in RR^n$ that is $p : RR^m -> RR^n$
- 
- Utility is $u_i (b) = v_i x_i (B) - p_i (B)$
-
- Where $p_i (B) in [0, b_i x_i (B)]$
+We want to determine $(x,p)$ where $x : RR^n -> X$ and $p : RR^n -> RR^n$ are the allocation and payment rules. The allocation rule determines how to allocate the items and payment rule determines how much agents have to pay.
 ]
-
+Notice, $(x,p)$ completely determines the auction mechanism.
+#definition(title:"Notation : Order Statistic")[
+  We will adopt the notation $b_((i))$ for the $i^("th")$ highest number amoung $b_1, b_2, dots, b_n$. Thus, the highest number is $b_((1))$ and second highest is $b_((2))$.
+]
+#remark[
+  The above notation is borrowed from probability theory and is reverse of the common one used there. That is $x_((i))$ is the $i^("th")$ smallest value amoung ${x_1, x_2, dots, x_n}$. The motivation for going in reverse of the convention is as we are more concerned with the higher values than the lower ones. Although, it is a good idea to mention in what one uses as it may otherwise confuse the readeer.
+]
+#example[
+- Notice, single item auctions had $X = {(1,0, dots , 0), (0,1,dots, 0), dots, (0,0,dots,0,1)}$.
+  - For second price auctions, $x_i = 1 "if" b_i = b_((1))$ but $p_i = b_((2)) "if" b_i = b_((1))$.
+  - For first price auctions, $x = 1 "if" b_i = b_((1))$ but $p_i = b_((1)) "if" b_i = b_((1))$.
+- For sponsored search auction, $X = "perm"(alpha_1, alpha_2, dots, alpha_k, underbrace((0, dots, 0), n-k))$. The allocation rule, as we showed above is, $b_((i)) |-> x_((i))$. We are yet to derive the payment rule.
+]
+We will now define 2 propoerties of these allocation rules.
 #definition(title : "Implementable Allocation Rules")[
   An allocation rule $x$ is implementable if $exists$ a payment rule $p$ such that the sealed bid auction $(x,p)$ is DSIC.
 ]
@@ -1672,18 +1686,6 @@ Let's define everything formally
   An allocation rule $x$ is monotone if $
   forall i in [n], forall z > y, quad x_i (z, b_(-i)) > x_i (y, b_(-i))
   $
-]
-#definition(title : "Awesome Auctions?")[
-We want an auction to have the following propoerties
-- *Dominant Strategy Incentive Compatible (DSIC)*: Truthful bidding must be a dominant stratergy.
-- *Strong Performance Guarantee*: Maximize $sum x_i v_i$ or social surplus.
-- Polytime Computability
-]#footnote[I am not sure if this is the real term for this. Will check at some point.]
-
-#definition(title : "Sponsored Search Auctions")[
-$n$ agents, $k$ slots, $i^("th")$ slot has click through rate $alpha_i$ where $alpha_1 >= dots >= alpha_k$ and valuations $v_j$. Agent $j$ derives value $alpha_i v_j$ if $i^("th")$ slot is allocated to $j$.
-
-We want to choose allocation and pricing rules.
 ]
 
 #lem(title : "Myerson's Lemma")[
@@ -1693,72 +1695,70 @@ We want to choose allocation and pricing rules.
 ]
 #proof[
   ($==>$)
-    Assume $x$ is implementable with DSIC pricing $p$.
-    Suppose $0 <= y <= z$
-    
-      (i) Suppose $b_i = z$ and $v_i = y$ and other agents have bids fixed at $b_(-i)$. This is the case of *overbidding*.
+  Assume $x$ is implementable with DSIC pricing $p$.
 
-      As we want the DSIC property, by the power of abuse of notation, we shall now read $x_i (z) = z_i (z, b_(-i))$.
+  We will use the DSIC condition that $forall i in [n], b_i in RR, b_(-i) in RR^(n-1)$ bidding truthfully maximizes one's utility. 
+  
+  Let's (ab)use notation as follows: $x(z) = x_i (z,b_(-i))$ and $p(z) = p_i (z, b_(-i))$.
 
-      $
-      y x_i (z) - p_i (z) <= y x_i (y) - p_i (y)
-      $
+  Now, consider if some agent had valuation $y$ and bidded $z$ and the vice versa (valuation $z$ and bid $y$). Consider $0 <= y < z$ and then by DSIC
+  $
+  z x(z) - p(z) >= z x(y) - p(y)\
+  y x(y) - p(y) >= y x(z) - p(z)\
+  => z [x(y) - x(z)] <= p(y) - p(z) <= y [x(y) - x(z)]
+  $
+  As $y < z => x(y) - x(z) <= 0$ and thus, $x$ is monotone.
 
-      (ii) Suppose $b_i = y$, $v_i = z$. This is the case of *underbidding*.
-      $
-      z x_i (y) - p_i (y) <= z x_i (z) - p_i (z)
-      $
+  Notice,
+  $
+  z [x(y) - x(z)] <= p(y) - p(z) <= y [x(y) - x(z)]\
+  => (z [x(y) - x(z)])/(y-z) >= (p(y) - p(z))/(y-z) >= (y [x(y) - x(z)])/(y-z)\
+  => lim_(y -> z) (z [x(y) - x(z)])/(y-z) >= lim_(y -> z) (p(y) - p(z))/(y-z) >= lim_(y -> z) (y [x(y) - x(z)])/(y-z)\
+  => z x'(z) >= p'(z) >= z x'(z)]
+  => p'(z) = z x'(z)\
+  => p_i (b_i, b_(-i)) = integral_(0)^(b_i) z dif/(dif z) x_i (z_i, b_(-i)) dif z
+  $
+  #remark[
+  Note, for a piecewise constent function,
+  $
+  p_i (b_i, b_(-i)) = sum_(j=1)^l z_j underbrace((x_i (z_j + epsilon) - x_i (z_j - epsilon)),"jump in" x_i(dot, b_(-i)) "at" z_j)
+  $
+  where $z_1, dots, z_l$ are the breakpoints of the allocation function $x_i (dot, b_(-i))$ in range $[0,b_i]$.
 
-    We can write $ z (x_i (y) - x_i (z)) <= p_i (y) - p_i (z) <= y (x_i (y) - x_i (z))$
+  This is just the Rieman integral of what we defined above and it exists as the set of discontinuities is countable!
+  ]
+  It is obvious that the payment formula defined is the only payment rule with a chance of extending the given piecewise constant allocation rule x into a DSIC mechanism. Thus, for every allocation rule $x$, there is at most one payment rule $p$ such that $(x, p)$ is DSIC.
 
-    $=> (z-y) (x_i (z) - x_i (y)) >= 0\
-    => z >= y => x_i (z) >= x_i (y)$.
-    
-    ($<==$) Assume $x$ is monotone.
-    $
-    y(x_i (z) - x_i (y)) <= p_i (z) - p_i (y) <= z (x_i - x_i (y))
-    $
-    (i) $x$ is flat at $y$
-    $
-    lim_(z -> y^+) y(x_i (z) - x_i (y)) <= lim_(z -> y^+) p_i (z) - p_i (y) <= lim_(z -> y^+) z (x_i - x_i (y))\
-    => p_i (z) = p_i (y)
-    $
-    for $z$ in neighborhood of $y$.
+  We still need to verify this rule works but that is grunt work and is left to this picture from Tim Roughgarden.
+  
+  #image("agth-pics/myerson-ver.png")
+]
+Let's finish this section off by applying this to find the payment rule for Sponsored Seatch Auction.
 
-    (ii) $x$ has a step jump at $y$ of height $h$
-    $
-    lim_(z -> y^+) y(x_i (z) - x_i (y)) <= lim_(z -> y^+) p_i (z) - p_i (y) <= lim_(z -> y^+) z (x_i - x_i (y))\
-    => y h <= p_i (z) - p_i (y) <= y h\
-    => p_i (z) - p_i (y) = y h
-    $
-    jump i $x$ at $y$ implies a jump in $p$ at $y$.
-
-    $
-    therefore "Price at" y_l "when there are" l "jumps" y_1, y_2, dots, y_l\
-    = sum_(i=1)^l y_i ("jump height at" y_i "in" x_i)
-    $
-
-    (iii) When $x$ is differentiable
-    $
-    lim_(z -> y) y(x_i (z) - x_i (y))/(z-y) <= lim_(z -> y) (p_i (z) - p_i (y))/(z-y) <= lim_(z -> y) (z (x_i - x_i (y)))/(z-y)\
-    => y x'_i (y) <= p'_i (y) <= y x'_i (y)\
-    => p'_i (y) = y x'_i (y)\
-    => p_i (z) = integral_0^z p'_i (y) = integral_0^z y x'_i (y)\
-    $
-
-    #todo[Will copy from somewhere else!!!!]
+Assume $alpha_1 >= alpha_2 >= dots >= alpha_n$ and $b_1 >= b_2 >= dots >= b_n$. We can see that Myerson's lemma gives the payment rule:
+$
+p_i = sum_(j=i) b_(i+1) (alpha_j - alpha_(j+1))
+$
+and dividing by $alpha_i$ as we are paid per click will give us the cost per click to charge $b_i$ as:
+$
+1/(alpha_i) sum_(j=i) b_(i+1) (alpha_j - alpha_(j+1))
+$
+#remark[
+  #todo[Write remark of GSP and above's equivalence in the precise case.]
 ]
 == Knapsack Auctions
 #definition[
   Seller's Capacity: $W$
 
-  Buyer $i$ has requirement $w_i$.
+  Buyer $i$ has requirement $w_i$ (public) and valuation $v_i$.
 
   Goal: Allocate $x_i$ amount to buyer $i in [n]$ such that $sum_(i=1)^n w_i x_i <= W$ where $x_i in {0,1}$.
 ]
-The issue with using our normal strategy is welfare maximization (assuming truthful bidding) maximize $sum_(i=1)^n x_i b_i$.
+The issue with using our normal strategy is welfare maximization (assuming truthful bidding) is that maximizing $sum_(i=1)^n x_i b_i$ is hard.
 
-This is NP Hard as this is literally the Knapsack problem which is NP Hard!
+Hard as in this is NP Hard as this is literally the Knapsack problem which is NP Hard!
+
+#todo[Lazy me!]
 
 *Can we modify the existing approximation algorithm to be monotone, retaining the approximation gurentee?* From [Chawla, Immorlica, Lucier 2012], it is not true in general. As in we can't do a black box reduction that is we need to know about the instance and can't do so in a general way.
 
@@ -1782,16 +1782,19 @@ This is NP Hard as this is literally the Knapsack problem which is NP Hard!
 This implies DSIC is free if we can design a mechanism with dominant strategy.
 
 == Revenue Maximization
-#example[
-One Agent, one item. The agent values it $v$ which is private.
-]
-This general case is not solvable. So we assume $v$ is drawn from a known probability distribution.
+Till now, we have tried to increase the happiness and revenue has just been a side product. Not anymore, after all profit matters.
+
+The agent values it $v$ which is private. Thanks to the Revelation Principle, we only need to consier $b = v$ cases. 
+
+We also assume $v$ is drawn from a known probability distribution.
 #exercise[
-  Let's say seller's price is drawn from $v tilde "Uniform"[0,1]$ and seller sets the price to $r$. What $r$ maximizes revenue?
+  Let's say there is one agent whose valuation is drawn from $v tilde "Uniform"[0,1]$ and seller sets the price to $r$. What $r$ maximizes revenue?
 ]
 #soln[
   Expected revenue is $r PP(v > r) = r (1-r)$ which is maximized at $r = 1/2$ and hence, expected revenue is $1/4$.
 ]
+This is called the monopoly pricing as this is what a monopolist can charge.
+
 #exercise[
   Let $v_1, v_2 tilde "Uniform"[0,1]$. What is expected revenue in a second price auction?
 ]
@@ -1854,36 +1857,23 @@ n (n-1) [- R^(n-1) + R^n] + n^2 R^(n-1)(1-R) - n R^n = 0\
 $
 Thus, the revenue is maximized at $R = 1/2$.
 ]
-
-== Revenue Maximizing Auctions
-Single parameter environments where each agent has a private valuation $v_i$ and $X$ is a set of feasible allocations.
+Let's now talk about the general cases. 
 
 *Our model* Single parameter environment where $v_i$'s are drawn form distributions $F_i, f_i$ which are independent and supported on $[0, v_(max)]$.
 
-The goal is to design a DSIC auction $(X, p)$ that maximizes the expected revenue.
+The goal is to design a DSIC auction $(X, p)$ that maximizes the expected revenue.#footnote[Roughgarden mentions that DSIC is optimal in a much stronger sense. I don't know what he means as I haven't done auctions before. Will do and fill in the blanks at some point later.]
 
-Seller knows $F_i forall i in [n]$, $v_i$'s are private to the agents.
+Seller knows $F_i, forall i in [n]$ and $v_i$'s are private to the agents.
+
+Notice, we want to find $EE[sum_(i=1)^n p_i(v)]$ where $v tilde F_1 times F_2 times dots times F_n$. But this get's us nowhere!
+
+So what do we do? We try to use the allocation rule and Myerson to implicitly get the payment rule.
 
 $
-"Welfare" = sum_(i=1)^n x_i v_i\
-EE("Welfare") &= EE[sum_(i=1)^n x_i (v) v_i]\
-&= sum_(i=1)^n EE[x_i (v) v_i]\
-&= sum_(i=1)^n integral_0^(v_(max)) x_i (v) v_i f_i (v_i) dif v_i \
-\
-\
-\
-"Revenue" = sum_(i=1)^n P_i (v)\
-EE("Revenue") &= EE [sum_(i=1)^n P_i (v)]\
-&= sum_(i=1)^n EE [P_i (v)]
-$
-By Myerson's lemma,
-$
-P_i (v_i, v_(-i)) = integral_0^(v_i) z x'_i (z, v_(-i)) dif z\
-=> EE[P_i (v)] &= integral_(0)^(v_max) P_i (v) f_i (v_i) d v_i\
+p_i (v_i, v_(-i)) = integral_0^(v_i) z x'_i (z, v_(-i)) dif z\
+=> EE[p_i (v)] &= integral_(0)^(v_max) p_i (v) f_i (v_i) d v_i\
 &= integral_0^(v_max) [integral_0^v_i z x'_i (z, v_(-i)) dif z] f_i (v_i) dif v_i
 $
-Notice, the region of integration is 
-#todo[Nice drawing!]
 Interchanging the integral
 $
 = integral_0^(v_max) [integral_z^(v_max) f_i (v_i) dif v_i] z x'_i (z) dif z\
@@ -1902,7 +1892,7 @@ integral_0^(v_(max)) x_i (v) v_i f_i (v_i) dif v_i
 $
 The only difference we get is the valuation. We call this the virtual valuation of the agent.
 $
-varphi_i (z) := Z - (1 - F_i (z))/(f_i (z))
+varphi_i (z) := underbrace(z,"actual valuation") - underbrace((1 - F_i (z))/(f_i (z)), "information rent aka value lost due to uncertainity")
 $
 
 $
@@ -1941,7 +1931,9 @@ Notice, $phi_i (z) <= 0$ for $z <= 1/2$. This implies that if all the virtual pr
 
 It uses weird probability theory things like Dini Derivative and Prekopa-Borel theorem etc which is way beyond the amount of math I know.
 ]
-
+#todo[
+  Prophet Inequality, Bulow-Klemperer Theorem and Simple Near Optimal Auctions#footnote[This is what happens when one misses two classes in the same week and forgets that the week existed.]
+]
 = Matching Theory
 #definition(title: "Stable Matching")[
   Sets $A,B$ where:
@@ -2024,9 +2016,7 @@ A similar proof will show:
 #thm[
   The output $M$ of DA simultaneously is such that $b in B$ has the worst possible stable partner.
 ]
-#remark[
-  Hannah Fry in "The Mathematics of Love" remarks on the above two theorems:
-
+#remark(title:"An Exerpt from \"The Mathematics of Love\" by Hannah Fry")[
   This result does make some intuitive sense. If you put yourself out there, start at the top of the list, and work your way down, you’ll always end up with the best possible person who’ll have you. If you sit around and wait for people to talk to you, you’ll end up with the least bad person who approaches you. Regardless of the type of relationship you’re after, it pays to take the initiative.
   
   The difference in outcomes between those who do the asking and those who wait to be asked is particularly important when the stable marriage problem is applied beyond imaginary couples at a party: something the US government found out the hard way. Through the National Resident Matching Program, the US government has been using the Gale Shapley algorithm to match doctors to hospitals since the 1950s. Initially, the hospitals did the “proposing.” This gave the hospitals the students they wanted, but didn’t work well for doctors who had to move halfway across the country to accept their least bad offer. It meant the system ended up full of unhappy doctors and, hence, unhappy hospitals. The organizers gave doctors the role of proposer when they found that out.
@@ -2035,13 +2025,14 @@ A similar proof will show:
   
   Mathematicians have adapted the method to allow both men and women to approach either gender simultaneously, and changed the rules to include ties in preference lists, or scenarios where you’d rather go home alone than hook up with the weird guy in the corner. Academics have even explored what happens when you have cheating men (not cheating women, though, strangely).
   
-  The math in these special cases can get quite heavy in places (although there are lots of lovely references at the end of this book if you’re interested in finding out more). But for all the extensions and examples, the message remains the same: If you can handle the occasional cringe-inducing rejection, ultimately, taking the initiative will see you rewarded. It is always better to do the approaching than to sit back and wait for people to come to you. So aim high, and aim frequently: The math says so.
+  But for all the extensions and examples, the message remains the same: If you can handle the occasional cringe-inducing rejection, ultimately, taking the initiative will see you rewarded. It is always better to do the approaching than to sit back and wait for people to come to you. So aim high, and aim frequently: The math says so.
   ]
 #thm[
   Let $M_1, M_2$ be two stable matchings. Form a set $S$ by assigning each $a in A$ his more preferred partner from $M_1, M_2$. 
   
   $S$ is a stable matching.
 ]
+The proof has been left upto to the dilligent reader.
 
 Let's now talk about the mechanism design aspects of this algorithm
 #thm[
@@ -2332,7 +2323,7 @@ The first half of this material comes from Abraham, Irving, Kavitha, Melhorn 200
 The problems of manipulation by a coalition is open#footnote[Was in the 2013 paper, Prof. Prajakta is not sure if it still is.]
 
 #remark[
-  In case of tied preferences, we can modify the above algorithm with 'galois' decomposition.
+  In case of tied preferences, we can modify the above algorithm with Gallai decomposition.#footnote[The algebra III course had taken over my brain in such a fashion that I wrote this as Galois decomposition and kept thinking how to apply that to graphs.]
 ]
 == Perfect Matching with double sided preferences
 #definition()[
@@ -2374,5 +2365,5 @@ Interestingly, giving 2 or more stars doesn't lead to popular matchings but lead
 This algorithm is quite general and hence, can be extended to a lot of cases. For example, we can use it in matching kids to collages.
 
 #align(center)[
-  #text(size: 64pt, weight: "bold", fill: rgb("#A7C957"))[THE END]
+  #text(size: 64pt, weight: "bold", fill: rgb("#6e7bd0"))[THE END]
 ]

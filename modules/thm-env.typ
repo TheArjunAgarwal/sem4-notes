@@ -20,7 +20,7 @@
 
 #let ex = thm-def("Example", fill: rgb("#ffeeee").lighten(50%), ..thm-args)
 
-#let algo = thm-def("Algorithm", fill: rgb("#E3B778").lighten(50%), ..thm-args)
+#let algo = thm-def("Algorithm", fill: rgb("#E9AEB6").lighten(50%), ..thm-args)
 
 #let claim = thm-def("Claim", fill: rgb("#E3B778").lighten(50%), ..thm-args)
 
