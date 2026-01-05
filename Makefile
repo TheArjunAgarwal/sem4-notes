@@ -1,5 +1,5 @@
 # List of .typ source files
-TYP_FILES = agth.typ alg3.typ algo.typ calc2.typ toc.typ
+TYP_FILES = aai.typ aalg.typ cana.typ
 
 # Derive the corresponding PDFs in the Renders/ folder
 PDFS = $(TYP_FILES:%.typ=Renders/%.pdf)
