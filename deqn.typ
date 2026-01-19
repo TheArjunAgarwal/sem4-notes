@@ -39,7 +39,11 @@ Always to lessen you headache, by making good choices. This is life gyaan, not o
 
 And that is a topic for other time. \<Adie looks at the clock\>. No need to look at the clock, I am ending the class.
 
-I get off my curly $cal(X)'s$(ex's). There is no pun there.#footnote[Lesson is to not make ex jokes in algebra class. Too much risk of pun not intended.]l
+I get off my curly $cal(X)'s$(ex's). There is no pun there.#footnote[Lesson is to not make ex jokes in algebra class. Too much risk of pun not intended.]
+
+Any comments? Any comments about my $x$? \<To Adie\> I know your name is also Aditya but that doesn't give you the right to comment about my $x$. Only I have that right. And the left.
+
+One should be careful. Being extra careful doesn't hurt. Maybe sometimes it does. Like when I am writing my papers, I feel I am being a little too careful. I should let my intuition carry the boat. 
 
 = Tuesday 13 Jan, 2026
 == Simplest Differential Equation
@@ -207,6 +211,174 @@ $
   Consider
   $
   X' = mat(-1, 0; 0, 2) X;\
-  => X(t) = mat(e^(-t), 0; e^(2 t), 0) X(0)
+  => X(t) = mat(e^(-t), 0; 0, e^(2 t)) X(0)
   $
   This works in diagonal matrices. But what about arbitrary matrices? We will see it next time.#footnote[Prof. Karnataki was interrupted by Prof. Madhavan...] 
+
+=  Friday 16 Jan, 2026
+== Recap
+Consider
+  $
+  X' = mat(-1, 0; 0, 2) X;\
+  => X(t) = mat(e^(-t), 0; 0, e^(2 t)) X(0)
+  $
+  As function of $x_1, x_2$, solution curves llie on $y = k/x^2$ where $k = c_1 ^2 c_2$.
+
+== Non Diagonal Matrices
+*Recall* If $lambda_1, lambda_2, dots, lambda_n$ are real distinct eigenvalues of $n times n$ matrix $A$, then there exists an invertible $n times n$ matrix such that
+$
+P^(-1) A P = "diag"(lambda_1, lambda_2, dots, lambda_n)
+$
+
+If $X' = A X$, define $Y = P^(-1) X$. Then $
+Y' = P^(-1) X' = P^(-1) A X = (P^(-1) A P) (P^(-1) X)\
+=> Y' = (P^(-1) A P) Y\
+=> Y(t) = "diag"(e^(lambda_1 t), dots, e^(lambda_n t)) Y(0) = E(t) Y(0)\
+=> X(t) = P E(t) P^(-1) X(0)
+$
+
+#lem[
+  $X' = A X$. Suppose $V_0$ is an eigenvector for $A$ with eigenvalue $lambda in RR$. Then $x(t) = e^(lambda t) V_0$  is a solution to the system. 
+]
+#proof[
+  This is because $X'(t) = lambda e^(lambda t) V_0 = e^(lambda t) (lambda V_0) = e^(lambda t) (A V_0) = A X(t)$
+]
+
+#example[
+  Consider $x'_1 = - x_1 - 3 x_2$ and $x'_2 = 2 x_2$. This gives
+  $
+  A = mat(-1, -3; 0, 2)
+  $
+  This gives the eigenvalues $lambda_1 = -1, lambda_2 = 2$ and the corresponding eigenvectors $V_1 = mat(1;0), V_2 = mat(-1; 1)$. Furthermore,
+  $
+  P = mat(1, -1; 0, 1) => P^(-1) = mat(1,1;0,1)
+  $
+  #remark[
+    Something worth remembering is that upper triangular matrices with diagonal being equal are inverted by just taking negative of all off diagonal elements.
+  ]
+  $
+  P^(-1) A P = mat(-1 , 0; 0, 2) => y'_1 = - y_1, y'_2 = 2 y_2
+  $
+  Then,
+  $
+  x(t) = P mat(e^(-t), 0; 0, e^(2 t)) P^(-1) X(0)\
+  => x_1 (t)= c_1 e^(-t) + c_2 (e^(-t) - e^(2 t)); x_2 (t)= c_2 e^(2 t)
+  $
+]
+== Phase Potraits
+#todo[Phase Potraits]
+
+#defn(title : "Equilibrium Definition")[
+  If $det A != 0$, $(0,0,dots,0)$ is the only equilibrium solution. If $det A = 0$, they will correspond to the kernel of $A$
+]
+
+#defn[
+  If $A$ has negative eigenvalue $lambda_1 , lambda_2, dots lambda_n$. and positive eigenvalue $lambda_(k+1), dots, lambda_(n)$ all distinct. Let ${v_1, v_2, dots, v_n}$ be the corresponding eigenvectors. Then stable subspace refers to:
+  $
+  E^"s" = "span" {v_1, dots, v_k}\
+  E^"un" = "span" {v_(k+1), dots, v_n}
+  $
+]
+== Matrix Exponentials
+We need convergence of $L(RR^n) = "subspace of linear operators" RR^n --> RR^n$
+
+Recall that *Operator Norm*: $T in L(RR^n), ||T|| : = max_(|x| <= 1) |T(x)|$
+
+#lem[
+  For $S, T in L(RR^n)$, $x in RR^n$. 
+
+  (a) $||T|| > 0$ and $||T || = 0 <==> T equiv 0$
+
+  (b) $||T|| = |k| ||T||$ for $k in RR$
+
+  (c) $||S + T|| <= ||S|| + ||T||$
+
+  (d) $||T(x)|| <= ||T|| |x|$
+
+  (e) $||T S|| <= ||T|| ||S||$
+
+  (f) $||T^k|| <= ||T||^k$ for $k in NN$
+]
+
+#defn[
+  $T_k --> T$ if $forall epsilon >0, exists N "s.t."$
+  $
+  ||T_k - T|| < epsilon forall k >= n
+  $
+]
+#thm[
+  Given $T in L(RR^n)$ and $t_0 > 0$,
+  $
+  sum_(k = 0)^oo (T^k t^k)/(k!) "converges absolutely and uniformly" forall |t| <= t_0
+  $
+]
+#proof[
+  Let $||T|| = a$
+  $
+  || (T^k t^k)/k! || <= (||T||^k |t|^k)/k! = (a^k |t|^k)/ k!
+  $
+  Since $sum_(k=0)^oo (a^k t_0^k)/k! = e^(a t_0)$, it follows from M test that it indeed coverges for $|t| < t_0$.
+]
+
+#defn[
+$  
+e^T := sum_(k = 0)^oo (T^k)/k! in L(RR^n)
+$
+]
+Notice, $||e^T|| <= e^(||T||)$
+
+#defn[
+  For a matrix $A$, $
+  e^(A t) = sum_(k = 0)^oo (A^k t^k)/k! in L(RR^n)
+  $
+]
+Notice, $||e^(A t)|| <= e^(||A t||)$
+
+#prop[
+  If $S = P T P^(-1)$, then
+  $
+  e^S = P e^T P^(-1)
+  $
+]
+#cor[
+  If $P^(-1) A P = "diag" (lambda_1, lambda_2, dots, lambda_n)$ then $e^(A t) = P e^("diag" (lambda_1, lambda_2, dots, lambda_n)) P^(-1)$
+]
+#prop[
+  If $S, T in L(RR^n)$ that commute, then $e^(S+T) = e^S e^T$
+]
+#proof[
+  If $S T = T S$, then by binomial theorem, $
+  (S+T)^n = n! sum_(j+k = n) (S^i T^k)/(j! k!)\
+  therefore e^(S+T) = sum_(n=0)^oo sum_(j+k = n) (S^j T^k)/(j! k!) = e^S e^T
+  $
+]
+
+#cor[
+  $(e^T)^(-1) = e^(- T)$
+]
+
+#cor[
+  If $A = mat(a, -b; b, a)$, $e^A = e^a mat(cos b, -sin b; sin b, cos b)$
+]
+#proof[
+Let $lambda = a + b i$, write $A^k$ in terms of $Re(lambda^k)$ and $Im(lambda^k)$
+]
+
+#cor[
+  If $A = mat(a,b; 0,0)$, $e^A = e^a mat(1,b; 0, 1)$
+]
+#proof[
+  $A = a I + b$ where $B = mat(0,b; 0, 0)$.
+
+  Then $a I$ and $B$ commute
+  $
+  e^A = e^(a I) e^b = e^a e^B  = e^a (I + B + 0 + dots) = e^a mat(1,b; 0, 1)
+  $
+]
+
+For any invertible $2 times 2$ matrix $A$, matrix of $e^(A t) = P e^(B t) P^(-1)$ where
+$
+e^(B t) = cases(
+  mat(e^(lambda t), 0; 0, e^(mu t)), e^(lambda t) mat(1, t; 0, 1), e^(at) mat(cos b t, - sin b t; sin b t, cos b t)
+)
+$
