@@ -6,6 +6,7 @@
 #show: thm-rules
 
 #let boxed = markrect
+#let pm = $plus.minus$
 
 #show: noteworthy.with(
   paper-size: "a4",
@@ -44,6 +45,28 @@ I get off my curly $cal(X)'s$(ex's). There is no pun there.#footnote[Lesson is t
 Any comments? Any comments about my $x$? \<To Adie\> I know your name is also Aditya but that doesn't give you the right to comment about my $x$. Only I have that right. And the left.
 
 One should be careful. Being extra careful doesn't hurt. Maybe sometimes it does. Like when I am writing my papers, I feel I am being a little too careful. I should let my intuition carry the boat. 
+
+I had to leave my fellowship for a while, but now I am back in white (he was wearing the Galois in Action TShirt), like Gandalf. I had to fight some Balrogs but now I am back.
+
+As you might remember, I fixed the clock on day 1. Perhaps fixing your clocks is the harder part.
+
+There is a complex analogue of the story, that is no more complex than the real part.
+
+If something is nilpotent, I can compute it in finite time so I have no problems. In that regard, outside I have $99$ but this ain't one of them. My 50 Cents for you.
+
+\<Jumping up and down and moving linearly, comparative to a frog\> I can just do $x + x^2/2 + x^3/3! + dots$ and it has to terminate by $2n$.
+
+But we would like to have a bound on $N$, I don't want to do say $20000$ computations manually. \<me: Won't you use a computer for that\>, In that case, million cross million matrices. Arey, point ko samjho. There has to always be a hard bound. That's why I carry a hard bound. \<taps his notebook\>
+
+This answers Aditya's question. Your Aditya I mean. I have many question which no one can answers.
+
+The center is hard to understand. It's likes coming close but never converging. It's like friendzone. A lot of $x$'s have been friendzoned.
+
+(Adie asks for the quiz at the begining of the class) Have you never been to my class before? Or was it your evil twin? \<He could be the evil twin\> Maybe they both are evil. But given this twin is coming to Differential Equations, I don't think he is evil. \<Engineers like DEQN.\> Hmm, They are differential in the way they do things.
+
+It's going to be a beatiful quiz. A big beatiful quiz. Nobody makes quizzes like me.
+
+(Negi keeps his phone on the board, pre-emptivly for the quiz) I have had a close association to CMI but this is a first. Now I have a story to tell, I once had a batch that had a bunch of weirdos. No, no. I should not say this. CMI is the place for all of you. I have no issues, can't say that for other professors.
 
 = Tuesday 13 Jan, 2026
 == Simplest Differential Equation
@@ -382,3 +405,217 @@ e^(B t) = cases(
   mat(e^(lambda t), 0; 0, e^(mu t)), e^(lambda t) mat(1, t; 0, 1), e^(at) mat(cos b t, - sin b t; sin b t, cos b t)
 )
 $
+
+= Tuesday 27 Jan, 2026
+#note[
+Prof. Karnataki is away attending a very important conference in Mumbai, which just happened to be conveniently located near a Linkin Park concert. Even though the tickets sold out in minutes and conferences are announced much later, miracles do happen. Therefore, Prof. Priyavrat will be revising the last class.
+]
+
+= Thursday 29 Jan, 2026
+#note[
+  Prof. Priyavrat in revision mode.
+]
+
+= Tuesday 2 Feb, 2026
+#note[
+  #todo[]
+]
+
+= Thursday 5 Feb, 2026
+
+#thm[
+  Let $A$ be a real $2n times 2n$ matrix with complex eigenvalues $lambda_j = a_j + i b_j$, $overline(lambda_j) = a_j - i b_j, j = 1, 2, dots, n (b_j = 0)$. Then there exists a generalized complex eigenvectors $w_j = u_j + i v_j$, $overline(w_j) = u_j - i v_j$ such that $P = mat(v_1 u_1, v_2 u_2, dots, v_n u_n)$ is invertible and $A = S + N$ such that:
+  $
+  P^(-1) S P = "diag" mat(a_j, b_(-j); b_j, a_j),
+  $
+  $N$ is nilpotent of order $k <= 2n$ and $S$ and $N$  commute.
+]
+
+*Recall* $2 times 2$ matrix $A$, repeated eigenvalues $lambda$, only $1$ eigenvector  $v_1$ then in $v_1, v_2$ basis ($v_2$ is arbitrary) then matrix $A$ in this basis is $mat(lambda, b; 0, lambda)$. 
+
+#thm[
+  Let $A$ be a real $n times n$ matrix with real eigenvalues $lambda_j, j = 1, 2, dots, k$, complex eigenvalues $mu_j = a_j + i b_j, overline(mu_j) = a_j - i b_j, j = k + 1, dots, (n+k)/2$. Then there exists a basis ${v_1, dots, v_k, t_(k+1) s_(k+1), dots, t_((n+k)/2) s_((n+k)/2)}$ for $RR^n$ such that $P = mat(v_1, dots, v_k, t_(k+1) s_(k+1), dots, t_((n+k)/2) s_((n+k)/2))$ is invertible and $P^(-1) A P = "diag"(B_1, B_2, dots, B_k)$ where $B_j$ for real eigenvalue $lambda$ is of the form:
+  $
+  B = mat(
+    lambda, 1, 0, 0, dots, 0;
+    quad, lambda, 1, 0, dots, 0;
+    ,, lambda, 1, dots, 0;
+    , , , dots.down , dots.down, dots.v;
+    ,,,, lambda,1;
+    ,,,,, lambda
+  )
+  $ 
+]
+#example[
+  For complex eigenvalue $lambda = a + i b$,
+  $
+  B = mat(
+    D, I_2, 0, 0, dots, 0;
+    quad, D, I_2, 0, dots, 0;
+    ,, lambda, D, dots, 0;
+    , , , dots.down , dots.down, dots.v;
+    ,,,, D,I_2;
+    ,,,,, D
+  ) 
+  $
+  where $D = mat(a, -b; b, a), I_2 = mat(1, 0; 0, 1), 0 = mat(0,0; 0,0)$
+
+  $
+  e^(B t) = e^(lambda t) mat(
+    1, t, t^2/2!, t^3/3!, dots, t^(m-1)/(m-1)!;
+    , 1, t, t^2/2!, dots, t^(m-2)/(m-2)!;
+    ,, 1, t, dots, t^(m-3)/(m-3)!;
+    , , , dots.down , dots.down, dots.v;
+    ,,,, 1,t;
+    ,,,,, 1)
+  $
+]
+#example[
+  Say $N = mat(0, 1, 0; 0, 0, 1; 0, 0, 0)$ then $N^2 = mat(0, 0, 1; 0, 0, 0; 0, 0, 0)$.
+
+  Note, $N^3$ will be $0$ as the $1$ will fly out.
+]
+
+#example[
+  $
+  e^(B t) = e^(a t) mat(
+    R, R t, R t^2/2!, R t^3/3!, dots, R t^(m-1)/(m-1)!;
+    , R, R t, R t^2/2!, dots, R t^(m-2)/(m-2)!;
+    ,, R, R t, dots, R t^(m-3)/(m-3)!;
+    , , , dots.down , dots.down, dots.v;
+    ,,,, R,R t;
+    ,,,,, R)
+  $
+  where $R = mat(cos b t, - sin b t; sin b t, cos b t)$
+]
+== Stability Theory
+Let $w_j = s_j + i t_j$ be (generalized) eigenvectors corresponding to $lambda_j = a_j + i b_j$, with $b_j$ allowed to be zero $(t_j = arrow(0))$. 
+
+#defn[
+  - $E^S = "Span" {s_j, t_j | a_j < 0}$ is the stable subspace
+  - $E^C = "Span" {s_j, t_j | a_j = 0}$ is the center
+  - $E^U = "Span" {s_j t_j | a_j > 0}$ is the unstable subspace
+]
+
+#example[
+  $
+  A = mat(0, 1, 0; -1, 0, 0; 0, 0, -1)
+  $
+  As the matrix is pre-blocked, we have the eigenvalues $pm i, -1$
+
+  Then, $X(t) = x_0 vec(cos t, - sin t, 0) + y_0 vec(sin t, cos t, 0) + z_0 e^(-t) vec(0,0,1)$.
+
+  This is stable along $z$ axis and the center is $x y$ plane.
+
+  In this case, the phase potrait is a bunch of cylinderical helices around the $z$ axis with a exponentially decreasing pitch. The $z$ axis just points to $0$. 
+
+  Notice, solutions starting in stable subspace stays in the stable subspace all the the time.
+]
+A question we have is the above remark true for the other subspaces.
+
+#defn[
+  $e^(A t) : RR^n -> RR^n$ is called the flow of the linear system. If all eigenvalues have non-zero real part, this is called hyperbolic flow.
+]
+#thm[
+  $E^S, E^U, E^C$ are invariant under the flow $e^(A t)$ and $RR^n = E^S plus.o E^U plus.o E^C$.
+]
+
+= Tuesday 10 Feb, 2026
+#note[
+  I had a rust quiz just next class and hence, didn't show up.
+]
+
+= Thursday 12 Feb, 2026
+== Existence and Uniqueness
+$J$ interval in $RR$, $0 in J$, $X : J -> E subset RR^n$.
+
+$X'(t) = F(X(t)), X(0) = X_0$.
+
+Integrating, we have:
+$
+X(t) = X_0 + integral_0^t F(X(s)) dif s
+$
+
+This seems sort of like a continuous recursive equation. We would like to somewhat substitute $X(t)$ again and again but we can't really deal with $F(integral X(t) dif x)$ type stuff.
+
+*Assumptions* $overline(B_epsilon)$ closed ball of radius $epsilon > 0$ at $X_0$. 
+
+$F$ has a Lipschitz constant $K$ on $overline(B_epsilon)$.
+
+$|F(X)| < M$ on $overline(B_epsilon)$, we choose $a > 0$ such that $a < min(epsilon/M, 1/K)$ and let $J = [-a, a]$.
+
+#idea(title: "Picard Iteration")[
+  Iteratively substitute for $X(s)$
+]
+
+$
+u_0 (t) &= X_0 &quad "For" t in J, "define"\
+u_1 (t) &= X_0 + integral_0^1 F(u_0(s)) dif s\
+&= X_0 + integral_0^t F(X_0) dif s &quad "Since" |t| <= a, |F(X_0)| <= M, "it follows that"\
+&= X_0 + t F(X_0) &quad u_0(t) = |u_1 (t) - X_0| <= a M < epsilon
+$
+Define by induction, $u_(k+1) (t) := X_0 + integral_0^t F(u_k (s)) dif s$.
+
+#claim[
+  $
+  |u_(k+1)(t) - u_k (t)| <= (a K)^k L "for some constant" L
+  $
+]
+#proof[
+Let $L = max_(-a <= t <= a) |u_1 (t) - u_0 (t)|$.
+
+Then $L <= a M$.
+
+(B)
+Then $
+u_2 (t) - u_1 (t) | &= |integral_0^t [F(u_1 (s)) - F(u_0 (s))] dif s |\
+&<= integral_0^t K |u_1 (s) - u_0 (s)| dif s\
+&<= a K L
+$
+
+(S) Assume by induction, $|u_k - u_(k-1)| <= (a K)^(k-1) L$
+
+Then,
+#todo[]
+
+And we are done, by induction!
+]
+
+Notice, $alpha := a K < 1$ then choose 
+#todo[]
+Thus, UNIFORM CONVERGENCE!
+
+Notice, $u_k -> X$ as $k -> oo$
+
+Since, $u_(k+1) (t) = X_0 + integral_0^t F(u_k (s)) dif s$. Take limit $k -> oo$
+$
+X(t) &= X_0 + lim_(k -> oo) integral_0^t F(u_k (s)) dif s\
+&= X_0 + integral_0^1 lim_(k -> oo) F(u_k (s)) dif s\
+&=^"uniform"_"convergence" X_0 + integral_0^t F(X(s)) dif s
+$
+
+*Uniqueness?* Suppose $X, Y$ are two solutions with $X(0) = Y(0) = X_0$. Let $Q := max_(t in J) |X(t) - Y(t)|$ attained at $t_1 in J$ (compactness).
+
+$
+Q = |X(t_1) - Y(t_1)| &= | integral_0^t [X'(s) - Y'(s)] dif s|\
+&<= integral_0^t |F(X(s)) - F(Y(s))| dif s \
+&<= integral_0^t K | X(s) - Y(s)| dif s\
+&<= a K Q
+$
+But $a K < 1 => Q = 0$.
+
+#example[
+  $X' = mat(0, 1; -1, 0) X, X_(0) = mat(1;0)$.
+
+  $
+  u_0 (t) = mat(1; 0)
+  $, 
+  
+  $
+  u_1 (t) &= mat(1;0) + integral_0^t F(mat(1;0)) dif s\
+  &= mat(1;0) + integral_0^t mat(0; -1) dif s \
+  &= mat(1; -t)  
+  $
+
+  
+]
