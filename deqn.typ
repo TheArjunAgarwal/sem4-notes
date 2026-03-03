@@ -619,3 +619,20 @@ But $a K < 1 => Q = 0$.
 
   
 ]
+= Tuesday 17 Feb, 2026
+#note[
+  I was not present, either physically or mentally.
+]
+= Thursday 19 Feb, 2026
+#note[
+  I was not present, either physically or mentally.
+]
+= Tuesday 24 Feb, 2026
+#note[
+  Prof. Karnataki had gone out!
+]
+= Thursday 26 Feb, 2026
+#note[
+  I think it is not hard to guess why and I'll not be writing this.
+]
+= Tuesday 3 Mar, 2026
