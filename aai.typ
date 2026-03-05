@@ -54,3 +54,5 @@ This divides AI into 4 quadrants
   Alan Turing proposed this in 1950. This was designed to provide a satisfactory operational definition of intelligence. A computer passes the test if a human interrogator, after posing some questions, cannot tell whether the written responses come from a person or from a computer without any physical interaction.
 ]
 A criticism of this test is that aeronautical engineering texts do not define the goal of their field as making pidgins that fly so exactly like pigeons that they can fool even other pigeons.
+
+#note[These notes were abandoned like the course after the Prof started glazing Elon Musk.]

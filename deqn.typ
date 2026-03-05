@@ -636,3 +636,201 @@ But $a K < 1 => Q = 0$.
   I think it is not hard to guess why and I'll not be writing this.
 ]
 = Tuesday 3 Mar, 2026
+== Equilibria in non-linear systems
+Assume RHS of $X' = F(t, X)$ is $C^oo$. As we know, often impossible to write explicit solutions when $F(X)$ is non linear.
+
+Equilibria solutions might be written down explicitly.
+
+#idea[Linearization gives a good handle on the behavior of solutions near the equilibrium]
+
+#example[
+  Consider:
+  $
+  x' = x + y^2\
+  y' = - y
+  $
+]
+Notice, the equilibrium solution is $(0,0)$ as
+$
+y' = 0 => y' = - y = 0 => y = 0\
+=> x' = 0 = x + y^2 = x + 0^2 => x = 0
+$
+
+So near $(0,0)$, $y^2$ is dominated by $x$ and hence, we can approximate the ODE by
+$
+x' = x\
+y' = -y
+$
+
+This is solved to $x = x_0 e^t, y = y_0 e^(-t)$
+
+Saddle at the origin as stable along $y$ axis but unstable along $x$.
+
+Let's try to now solve this by hand.
+First notice that $y$ is uncoupled and hence, if this system indeed has a solution, then 
+$
+y' = -y => y = y_0 e^(-t)
+$
+
+Hence,
+$
+x' = x + y^2_0 e^(-2t)
+$
+
+which one can solve by getting the particular solution:
+$
+x(t) = -1/3 y_0^2 e^(-2t)
+$
+
+Then the general solution is:
+$
+x(t) = (x_0 + 1/3 y_0^2)e^t - -1/3 y_0^2 e^(-2t)
+$
+with the condition at $t = 0, x=0$.
+
+At $y_0 = 0$, $x(t) = x_0 e^t, y(t) = 0$.
+
+*The vector field along $y$ axis* is $(y^2, - y)$ at $(0,y)$.
+
+Choose $(x_0, y_0)$ on this curve, let $x(t)$ and $y(t)$ be the solutions.
+
+$
+x(t) = -1/3 y_0^2 e^(-2 t)\
+y(t) = y_0 e^(-t)
+$
+Then
+$
+x(t) + 1/3 (y(t))^2 = 0 
+$
+that is solution always remains on this curve if initial position was on the curve.
+
+Thus, this is a stable curve. Tangent to $y$ axis at the origin.
+
+Suggests a non-linear coordinate change.
+
+$
+u = x + 1/3 y^2\
+v = y
+$
+
+$
+u' = x' + 2/3 y y' = x + 1/3 y^2 = u\
+v' = - v
+$
+
+*Can we always do that?* NO!
+
+Hence, we need to understand than the concept of closeness solutions better.
+
+#thm(title: "Smoothness of flows")[
+  Consider $X' = F(X), F(X)$ is $C^1$. Then the flow $phi.alt(t, X)$ is a $C^1$ function of $t$ and $X$.
+]
+That is $(diff phi.alt)/(diff t)$ and $(diff phi.alt)/(diff X)$ exist, and are continuous in $t$ and $X$.
+
+Note,
+$
+(diff phi.alt)/(diff t) (t,X_0) = F(phi.alt(t,X_0))
+$
+is $C^1$ by hypothesis.
+
+Question is about: $(diff phi.alt)/(diff X) (t, X_0) = D phi.alt_t (X_0)$ where $D phi.alt_t$ is the Jacobian of $X |-> phi.alt_t (X)$.
+
+$D phi.alt_t$ is a matrix containing partial derivatives of components of $phi.alt_t$.
+
+Appears that we'll need to know solutions thorough all nearby inital positions.
+
+We can get around this using variational equations.
+== Brief Detour
+#thm[
+  Let $E subset RR times RR^n$ be open $F : E -> RR^n$. $C^1$ in $X$, continuous in $t$. $(t_0, x_0) in E$.
+
+  There is an open interval $J in t_0$ and unique solution of $X' = F(t, X)$ defined on $J$ satisfying $X(t_0) = X_0$. 
+]
+#cor[
+  Let $A(t)$ be a continuous family of matrices, $n times n$. $t in [alpha, beta]$. Then, $X' = A(t) X, X(t_0) = X_0$ has a unique solution on $[alpha, beta]$.
+]
+
+= Thursday 5 Mar, 2026
+*Recall* Smoothness of flows $=>$ $(diff f)/(diff x)$ needs to be $C^1$.
+
+$
+lim_(h -> 0) (phi.alt(t, x_0 + arrow(h)) - phi.alt(t, x_0))/(|arrow(h)|)
+$
+
+Notice, $phi.alt(t, x_0)$ is the solution to the IVP $x' = F(x), x(0) = 0$ and $phi.alt(t, x_0 + arrow(h))$ is the solution to the IVP $x' = F(x), x(0) = x_0 + arrow(h)$.
+
+The derivative measures how the entire family of trajectories changes.
+
+== Variational Equation for $X' = F(X)$ $X(0) = X_0$
+For each $t in J supset {0}$. Let $A(t) = D F_(X(t))$.
+
+$A(t)$ is continuous by hypothesis.
+
+Define $U'(T) = T union U$ (calculus of variations)
+
+$X(t) = phi(t,x_0); X_h (t) = phi(t, X_0 + h)$.
+
+$Z_h (t) := (X_n (t) - X(t))/(|h|)$
+
+On the other hand, $
+X'_n - X' = F(X_h) - F(X) = D F_x (X_n - X) + "higher under terms"
+$
+
+$
+Z'_n = D F_(X(t)) Z_h + "error terms"
+$
+
+As $h -> 0$, error term vanishes and limit defined to be $Z(t)$, say
+$
+therefore underbrace(Z' = D F_(x(t)) Z, "Variational Equation") quad Z(0) = h/(|h|)
+$
+
+#thm[
+  For every $epsilon > 0$, there exists $delta > 0$ such that if $|h| <= delta$ then $|x_h (t) - X(t) - U_h (t)| <= epsilon |H| forall t in J$.
+]
+
+== Proof of Theorem using proposition!
+#proof[
+  $(diff phi.alt)/(diff x) (t, x_0)$ is the linear map sending $h -> U_n (t)$.
+
+  So continuity of it is a consequence of continuity of data of solutions in the initial conditions for $U' = A(t) U$.
+]
+
+== Proof of Proposition
+#proof[
+  $
+  X(t) = X_0 + integral_0^t F(X(s)) dif s\
+  X_h (t) = X_0 + h + integral_0^t F(X_h (s)) dif s\
+  U_h (t) = h + integral_0^t D F_(X(t)) U_h (s) dif s\
+  therefore underbrace(|X_h (t) - X(t) - U_h (t)|, cal(I)(t)) <= integral_0^t |F(X_h (s)) - F(X(s)) - 1 - D F_(X(s)) U_h (s)| dif s
+  $
+
+  Taylor approximation for $F$ at point $Z$ is
+  $
+  F(Y) = F(z) + D F_z (Y - Z) + R (z, Y-Z)
+  $
+  where $lim_(Y -> Z) (R(Z, Y-Z))/(|Y-Z|) = 0$ uniformly on $Y$ for $Y in "Compact Set"$.
+
+  Apply $Y = X_h (s), Z= X(s)$
+  $
+  cal(I)(t) <= integral_0^t |D F_(X(s)) {X_h (s) - X(s) - U_h (s)}|  + integral_0^t |R(X(s), X_n (s) - X(s))| dif s
+  $
+
+  Define $N := max{|D F_(X(s)) | s in J}$
+
+  $
+  therefore cal(I)(t) <= N integral_0^t cal(I)(s) dif s + integral_0^t |R(X(s), X_h (s) - X(s))| dif s
+  $
+
+  Fix $epsilon > 0$m $delta_0 > 0$ small so that
+  $
+  |R(X(s), X_h (s) - X(s)| <= epsilon |X_h (s) - X(s)|, "if" |X_h (s) - X(s)| <= delta_0 "and" s in J
+  $
+
+  From continuity of initial dependence, we have:
+  $
+  exists K >= 0, delta > 0 "s.t."\
+  |X_h (s) - X(s)| <= |h| e^(k s) <= delta_0, "if" |h| <= delta "and" s in J
+  $
+  #todo[Complete this!]
+]

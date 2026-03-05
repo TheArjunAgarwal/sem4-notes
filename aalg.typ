@@ -15,3 +15,5 @@
   contact-details: "thearjunagarwal.github.io",
   toc-title: "Table of Contents"
 )
+
+#note[These notes were abandoned like the course as the class was on every Monday morning and double length as the prof didn't want to come to uni more than once a week. I got way too sleepy in all of the first 3 classes (worth 6 lectures).]
